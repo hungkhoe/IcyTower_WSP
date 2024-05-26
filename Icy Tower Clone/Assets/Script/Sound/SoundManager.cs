@@ -6,10 +6,11 @@ public class SoundManager : MonoBehaviour
 {
     public static SoundManager Instance;
 
-    private AudioSource music;
-    private AudioSource sfx;
+    public AudioSource music;
+    public AudioSource sfx;
 
-    public AudioClip[] musicClips, soundClips;
+    [SerializeField] private AudioClip[] soundClips;
+    [SerializeField] private AudioClip[] musicClips;
 
     private void Awake()
     {
@@ -33,7 +34,7 @@ public class SoundManager : MonoBehaviour
     {
         AudioSource[] source = GetComponents<AudioSource>();
         music = source[0];
-        music = source[1];
+        sfx = source[1];
     }
 
     public void SetMuic(MusicClip _music)
