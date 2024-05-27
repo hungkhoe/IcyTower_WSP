@@ -35,9 +35,12 @@ public class SoundManager : MonoBehaviour
         AudioSource[] source = GetComponents<AudioSource>();
         music = source[0];
         sfx = source[1];
+
+        music.loop = true;
+        SetMusic(MusicClip.Home);            
     }
 
-    public void SetMuic(MusicClip _music)
+    public void SetMusic(MusicClip _music)
     {
         music.clip = musicClips[(int)_music];
         music.Play();
