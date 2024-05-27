@@ -30,7 +30,7 @@ public class ClockManager : MonoBehaviour
                 yield return null;
             }
 
-            print("break");
+            GameManager.Instance.IncreaseScreenSpeed();
             clockWise.rotation = startRot;
         }
 
