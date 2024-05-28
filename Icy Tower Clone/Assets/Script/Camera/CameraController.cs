@@ -10,6 +10,9 @@ public class CameraController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (GameManager.Instance.isPause)
+            return;
+
         transform.Translate(0, cameraSpeed * Time.deltaTime, 0);
     }
 

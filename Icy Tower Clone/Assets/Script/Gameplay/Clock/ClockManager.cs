@@ -8,7 +8,7 @@ public class ClockManager : MonoBehaviour
 
     public float breaksDownSpeed;
 
-    private float timePerRotation = 5;
+    private float timePerRotation = 30;
     private int totalRevolution = 5;
 
     private void Start()
@@ -17,6 +17,8 @@ public class ClockManager : MonoBehaviour
     }
     IEnumerator Rotate(int _totalRevolition)
     {
+        //yield return new WaitUntil
+
         Quaternion startRot = clockWise.rotation;
 
         for(int i = 0; i < _totalRevolition; i++)
@@ -25,8 +27,11 @@ public class ClockManager : MonoBehaviour
 
             while (t < timePerRotation)
             {
+                yield return new WaitUntil(() => GameManager.Instance.isPause == false);
+
                 t += Time.deltaTime;
-                clockWise.rotation = startRot * Quaternion.AngleAxis(t / timePerRotation * 360f, Vector3.back);
+                clockWise.rotation = startRot * Quaternion.AngleAxis(t / timePerRotation * 360f, Vector3.back);                
+
                 yield return null;
             }
 

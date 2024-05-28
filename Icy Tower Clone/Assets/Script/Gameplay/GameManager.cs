@@ -8,6 +8,8 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] CameraController cameraController;
 
+    public bool isPause = true;
+
     private void Awake()
     {
         Instance = this;
