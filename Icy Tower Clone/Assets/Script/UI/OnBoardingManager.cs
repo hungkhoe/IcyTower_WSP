@@ -54,12 +54,14 @@ public class OnBoardingManager : MonoBehaviour
             previousButton.interactable = true;
 
         if (isMainPage)
-        {
+        {   
+            // re position other page to reuse it as pooling
             secondOnboardPage.localPosition = new Vector3(firstOnboardPage.localPosition.x + screenWidth, firstOnboardPage.localPosition.y, firstOnboardPage.localPosition.z);
             secondOnboardPage.GetComponent<Image>().sprite = onBoardPages[indexPage];
         }
         else
-        {
+        {   
+            // re position other page to reuse it as pooling
             firstOnboardPage.localPosition = new Vector3(secondOnboardPage.localPosition.x + screenWidth, secondOnboardPage.localPosition.y, secondOnboardPage.localPosition.z);
             firstOnboardPage.GetComponent<Image>().sprite = onBoardPages[indexPage];
         }
@@ -99,11 +101,13 @@ public class OnBoardingManager : MonoBehaviour
 
         if (isMainPage)
         {
+            // re position other page to reuse it as pooling
             secondOnboardPage.localPosition = new Vector3(firstOnboardPage.localPosition.x - screenWidth, firstOnboardPage.localPosition.y, firstOnboardPage.localPosition.z);
             secondOnboardPage.GetComponent<Image>().sprite = onBoardPages[indexPage];
         }
         else
         {
+            // re position other page to reuse it as pooling
             firstOnboardPage.localPosition = new Vector3(secondOnboardPage.localPosition.x - screenWidth, secondOnboardPage.localPosition.y, secondOnboardPage.localPosition.z);
             firstOnboardPage.GetComponent<Image>().sprite = onBoardPages[indexPage];
         }

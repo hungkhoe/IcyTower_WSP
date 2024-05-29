@@ -21,4 +21,10 @@ public class GameManager : MonoBehaviour
     {
         cameraController.IncreaseScreenSpeed();
     }
+
+    public void PlayerDie()
+    {
+        isPause = true;
+        inGameUI.TurnOnGameOverUI();
+    }
 }
