@@ -11,7 +11,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Animator _animator;   
 
     private float horizontalInput;
-    private float verticalInput;   
+    private float verticalInput;
+
+    private bool isGrounded;
 
     void Update()
     {
@@ -28,6 +30,29 @@ public class PlayerMovement : MonoBehaviour
         MoveUpdate();
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.collider.tag == "Platform")
+        {       
+            Vector2 collisionNormal = collision.contacts[0].normal;
+           
+            if (collisionNormal.y > 0.5f)
+            {
+                Debug.Log("Landed on top of the platform");
+                isGrounded = true;
+                collision.gameObject.GetComponent<Platform>().PlayerLand();
+            }          
+        }       
+    }
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.collider.tag == "Platform")
+        {
+            if (isGrounded)
+                isGrounded = false;
+        }
+    }
+
     private void InputUpdate()
     {
         horizontalInput = 0;
@@ -42,7 +67,7 @@ public class PlayerMovement : MonoBehaviour
             horizontalInput = -1;
         }
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
             verticalInput = 1;
             _rigidBody.AddForce(new Vector2(0, jumpForce));
@@ -52,8 +77,9 @@ public class PlayerMovement : MonoBehaviour
         _animator.SetFloat("horizontal", horizontalInput);    
     }
     private void MoveUpdate()
-    {           
+    {      
+
         Vector2 moveDirection = new Vector2(horizontalInput, 0);
         _rigidBody.AddForce(moveDirection * moveSpeed,ForceMode2D.Force);
-    }  
+    }   
 }

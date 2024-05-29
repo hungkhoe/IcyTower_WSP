@@ -6,14 +6,16 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
-    [SerializeField] CameraController cameraController;
+    [SerializeField] internal CameraController cameraController;
+    [SerializeField] internal PlatformManager platformManager;
+    [SerializeField] internal InGameUI inGameUI;
 
-    public bool isPause = true;
+    public bool isPause = true;  
 
     private void Awake()
     {
         Instance = this;
-    }
+    }   
 
     public void IncreaseScreenSpeed()
     {

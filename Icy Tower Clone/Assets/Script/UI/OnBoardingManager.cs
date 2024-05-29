@@ -5,10 +5,19 @@ using UnityEngine.UI;
 
 public class OnBoardingManager : MonoBehaviour
 {
+    [Header("Page Sprite")]
     [SerializeField] private Sprite[] onBoardPages;
-    [SerializeField] private Transform firstOnboardPage, secondOnboardPage,onBoardParent;
-    [SerializeField] private Button previousButton, nextButton;
 
+    [Header("Page Variable")]
+    [SerializeField] private Transform firstOnboardPage;
+    [SerializeField] private Transform secondOnboardPage;
+    [SerializeField] private Transform onBoardParent;
+
+    [Header("Buttons")]
+    [SerializeField] private Button previousButton;
+    [SerializeField] private Button nextButton;
+
+    [Header("Page Stats")]
     [SerializeField] private float movingPageSpeed;
 
     private int indexPage = 0;

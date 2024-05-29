@@ -16,9 +16,7 @@ public class ClockManager : MonoBehaviour
         StartCoroutine(Rotate(totalRevolution));
     }
     IEnumerator Rotate(int _totalRevolition)
-    {
-        //yield return new WaitUntil
-
+    {      
         Quaternion startRot = clockWise.rotation;
 
         for(int i = 0; i < _totalRevolition; i++)
