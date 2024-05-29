@@ -4,24 +4,17 @@ using UnityEngine;
 
 public class Wall : MonoBehaviour
 {
-   private BoxCollider2D boxCollider2D;
+    // Start is called before the first frame update
 
-    private void Start()
-    {
-        boxCollider2D = GetComponent<BoxCollider2D>();
-    }
+    public int wallIndex = 0;    
 
-    private void OnDisable()
+    // Update is called once per frame
+    void Update()
     {
-        boxCollider2D.enabled = true;
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if(collision.tag == "Player")
+        if(GameManager.Instance.platformManager.totalWall - wallIndex >= 5)
         {
-            GameManager.Instance.platformManager.SpawnWall();
-            boxCollider2D.enabled = false;
+            if(wallIndex != 0)
+            SimplePool.Despawn(gameObject);         
         }
     }
 }

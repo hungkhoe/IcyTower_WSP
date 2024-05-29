@@ -36,7 +36,7 @@ public class PlatformManager : MonoBehaviour
     internal int currentPlatformDisapear = 0;
 
     private float starWallY;
-    private int totalWall = 1;
+    internal int totalWall = 1;
 
     void Start()
     {
@@ -119,15 +119,13 @@ public class PlatformManager : MonoBehaviour
     {
         starWallY = startWall.transform.position.y;
 
-        for(int i = 0; i < 2; i++)
-        {
-            SpawnWall();
-        }  
+        SpawnWall();
     }
     public void SpawnWall()
     {
         GameObject temp = SimplePool.Spawn(wall, new Vector3(0, starWallY + wallSpace * totalWall), Quaternion.identity);
-        temp.transform.SetParent(enviromentObject);        
+        temp.transform.SetParent(enviromentObject);
+        temp.GetComponent<Wall>().wallIndex = totalWall;
 
         totalWall++;
     }

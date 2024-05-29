@@ -21,9 +21,9 @@ public class PlayerMovement : MonoBehaviour
     private bool isBounce = false;
 
     [SerializeField] private Transform dieCheck;
-    [SerializeField] private Transform wallCheck;
-    [SerializeField] private float radisWallCheck;
-    [SerializeField] private LayerMask wallLayer;
+    [SerializeField] private Transform groundCheck;
+    [SerializeField] private float groundCheckRadius;
+    [SerializeField] private LayerMask groundMask;
 
     private Camera camera;
 
@@ -56,10 +56,10 @@ public class PlayerMovement : MonoBehaviour
         if (GameManager.Instance.isPause)
             return;
 
-        playerVelocity = _rigidBody.velocity;
+        GroundCheck();
+        MoveUpdate();       
 
-        MoveUpdate();
-        CheckWall();
+        playerVelocity = _rigidBody.velocity;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -72,19 +72,18 @@ public class PlayerMovement : MonoBehaviour
             {
                 Debug.Log("Landed on top of the platform");
                 isGrounded = true;
-                collision.gameObject.GetComponent<Platform>().PlayerLand();
                 isBounce = true;
+                collision.gameObject.GetComponent<Platform>().PlayerLand();              
             }
         }
-    }
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        if (collision.collider.tag == "Platform")
+
+        if(collision.collider.tag == "Wall")
         {
-            if (isGrounded)
-                isGrounded = false;
+            Vector2 bounce = new Vector2(-playerVelocity.x, playerVelocity.y);
+            _rigidBody.velocity = bounce * bounceForce;
+            _animator.SetTrigger("bounce");
         }
-    }
+    }      
 
     private void InputUpdate()
     {
@@ -106,35 +105,39 @@ public class PlayerMovement : MonoBehaviour
             _rigidBody.velocity = new Vector2(_rigidBody.velocity.x, jumpForce);
             _animator.SetTrigger("jump");
         }
-      
+
         _animator.SetFloat("vertical", _rigidBody.velocity.y);
-        _animator.SetFloat("horizontal", _rigidBody.velocity.x);       
+        _animator.SetFloat("horizontal", _rigidBody.velocity.x);
+
+        _animator.SetFloat("verticalInput", verticalInput);
+        _animator.SetFloat("horizontalInput", horizontalInput);       
     }
     private void MoveUpdate()
     {      
         Vector2 moveDirection = new Vector2(horizontalInput, 0).normalized;
+
         _rigidBody.velocity += moveDirection * moveSpeed;
 
         if(_rigidBody.velocity.x >= playerThreadsHoldSpeedX)
         {
             _rigidBody.velocity = new Vector2(playerThreadsHoldSpeedX, _rigidBody.velocity.y);
         }
+        else if(_rigidBody.velocity.x <= -playerThreadsHoldSpeedX)
+        {
+            _rigidBody.velocity = new Vector2(-playerThreadsHoldSpeedX, _rigidBody.velocity.y);
+        }
 
         if(_rigidBody.velocity.y >= playerThreadsHoldSpeedY)
         {
             _rigidBody.velocity = new Vector2(_rigidBody.velocity.x, playerThreadsHoldSpeedY);
         }
-    }
-    private void CheckWall()
+    }    
+    private void GroundCheck()
     {
-        Collider2D collider2D = Physics2D.OverlapCircle(wallCheck.transform.position, radisWallCheck, wallLayer);
-        if (collider2D != null && isBounce)
+        Collider2D hit = Physics2D.OverlapCircle(groundCheck.transform.position, groundCheckRadius,groundMask);
+        if(hit == null)
         {
-            Vector2 bounce = new Vector2(-playerVelocity.x, playerVelocity.y);
-            isBounce = false;           
-            _rigidBody.velocity = bounce * bounceForce;
-
-            _animator.SetTrigger("bounce");
+            isGrounded = false;
         }
     }
 
@@ -161,6 +164,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.DrawWireSphere(wallCheck.transform.position, radisWallCheck);
+        Gizmos.DrawWireSphere(groundCheck.transform.position, groundCheckRadius);
     }
 }

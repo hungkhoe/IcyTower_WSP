@@ -9,9 +9,9 @@ public class CameraController : MonoBehaviour
 
     // check if player on top screen
     public Transform player; 
-    public float smoothSpeed = 0.125f;
-    public float verticalOffset = 2.0f; 
-    public float topScreenThreshold = 0.9f;
+    public float smoothSpeed;
+    public float verticalOffset; 
+    public float topScreenThreshold;
 
     private Camera mainCamera;
     private Vector3 startPos;

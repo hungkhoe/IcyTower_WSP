@@ -571,9 +571,9 @@ RectTransform:
   m_Father: {fileID: 704708178}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 0.5}
-  m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -179, y: -772}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 437, y: -772}
   m_SizeDelta: {x: 169.26562, y: 187.5155}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &166770993
@@ -1462,7 +1462,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 583754958}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.08906989, y: -1.338, z: -0.013015769}
+  m_LocalPosition: {x: -0.08906989, y: -1.6, z: -0.013015769}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1483,8 +1483,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.03361857, y: 0.01627481}
-  m_Size: {x: 1.3068464, y: 2.4466684}
+  m_Offset: {x: 0.004663527, y: 0.01627481}
+  m_Size: {x: 0.7326144, y: 2.4466684}
   m_Direction: 0
 --- !u!114 &583754961
 MonoBehaviour:
@@ -1500,17 +1500,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 1
   jumpForce: 18
-  bounceForce: 1
-  playerThreadsHoldSpeedX: 15
+  bounceForce: 1.1
+  playerThreadsHoldSpeedX: 10
   playerThreadsHoldSpeedY: 20
   _rigidBody: {fileID: 583754962}
   _animator: {fileID: 1997955448}
   dieCheck: {fileID: 352142347}
-  wallCheck: {fileID: 1852347666}
-  radisWallCheck: 0.79
-  wallLayer:
+  groundCheck: {fileID: 1852347666}
+  groundCheckRadius: 0.3
+  groundMask:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 128
 --- !u!50 &583754962
 Rigidbody2D:
   serializedVersion: 4
@@ -2601,10 +2601,10 @@ RectTransform:
   m_Father: {fileID: 704708178}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.5}
-  m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 172, y: -772}
-  m_SizeDelta: {x: 169.2656, y: 187.5155}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -444, y: -772}
+  m_SizeDelta: {x: 169.26562, y: 187.5155}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1106758503
 MonoBehaviour:
@@ -3894,7 +3894,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1852347666}
   m_Layer: 0
-  m_Name: wallCheck
+  m_Name: groundCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3908,7 +3908,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1852347665}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.43, z: 0}
+  m_LocalPosition: {x: 0, y: -1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4190,6 +4190,7 @@ GameObject:
   - component: {fileID: 2056953435}
   - component: {fileID: 2056953437}
   - component: {fileID: 2056953438}
+  - component: {fileID: 2056953439}
   m_Layer: 6
   m_Name: wallStart
   m_TagString: Wall
@@ -4317,6 +4318,19 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.0319653, y: 19.2}
   m_EdgeRadius: 0
+--- !u!114 &2056953439
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2056953434}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08415a1b1814e7e4c9873d9f324335c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  wallIndex: 0
 --- !u!1 &2122963719
 GameObject:
   m_ObjectHideFlags: 0
