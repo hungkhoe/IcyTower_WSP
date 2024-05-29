@@ -11,9 +11,11 @@ public class ClockManager : MonoBehaviour
     private float timePerRotation = 30;
     private int totalRevolution = 5;
 
+    private Coroutine coroutine;
+
     private void Start()
     {
-        StartCoroutine(Rotate(totalRevolution));
+        coroutine = StartCoroutine(Rotate(totalRevolution));
     }
     IEnumerator Rotate(int _totalRevolition)
     {      
@@ -43,5 +45,15 @@ public class ClockManager : MonoBehaviour
             clockWise.transform.Rotate(0, 0, breaksDownSpeed * Time.deltaTime);
             yield return null;
         }
+    }
+
+    public void ResetGame()
+    {
+        if (coroutine != null)
+            StopCoroutine(coroutine);
+
+        clockWise.transform.rotation = Quaternion.identity;
+
+        coroutine = StartCoroutine(Rotate(totalRevolution));
     }
 }

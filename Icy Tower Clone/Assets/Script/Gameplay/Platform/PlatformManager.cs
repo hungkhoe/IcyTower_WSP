@@ -36,7 +36,7 @@ public class PlatformManager : MonoBehaviour
     internal int currentPlatformDisapear = 0;
 
     private float starWallY;
-    private int totalWall = 1;
+    private int totalWall = 0;
 
     void Start()
     {
@@ -125,5 +125,25 @@ public class PlatformManager : MonoBehaviour
         temp.transform.SetParent(enviromentObject);        
 
         totalWall++;
+    }
+
+    // reset new game
+    public void ResetGame()
+    {
+        for (int i = 0; i < enviromentObject.childCount; i++)
+        {
+            SimplePool.Despawn(enviromentObject.GetChild(i).gameObject);
+        }
+
+        currentPlatformDisapear = 0;
+        currentLevel = 0;
+        playerHighestPlatform = 0;
+
+        totalWall = 0;
+        totalPlatform = 1;
+
+        startPlatform.gameObject.SetActive(true);
+
+        Init();        
     }
 }

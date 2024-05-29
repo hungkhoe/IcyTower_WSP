@@ -17,9 +17,12 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Transform dieCheck;
     private Camera camera;
 
+    private Vector3 startPos;
+
     private void Start()
     {
         camera = Camera.main;
+        startPos = transform.position;
     }
 
     void Update()
@@ -98,5 +101,10 @@ public class PlayerMovement : MonoBehaviour
         Vector3 viewportPos = camera.WorldToViewportPoint(dieCheck.position);      
         bool isInView = viewportPos.y >= 0 && viewportPos.z > 0;
         return isInView;
+    }
+
+    public void ResetGame()
+    {
+        transform.position = startPos;
     }
 }

@@ -14,10 +14,12 @@ public class CameraController : MonoBehaviour
     public float topScreenThreshold = 0.9f;
 
     private Camera mainCamera;
+    private Vector3 startPos;
 
     private void Start()
     {
         mainCamera = Camera.main;
+        startPos = mainCamera.transform.position;
     }
 
     private void FixedUpdate()
@@ -43,10 +45,15 @@ public class CameraController : MonoBehaviour
             Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed);
             transform.position = smoothedPosition;
         }
-    }
-  
+    }  
     public void IncreaseScreenSpeed()
     {
         cameraSpeed += cameraIncreaseSpeed;
+    }
+
+    public void ResetGame()
+    {
+        mainCamera.transform.position = startPos;
+        cameraSpeed = 0.1f;
     }
 }
