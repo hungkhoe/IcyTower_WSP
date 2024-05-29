@@ -12,8 +12,15 @@ public class PlayerMovement : MonoBehaviour
 
     private float horizontalInput;
     private float verticalInput;
-
     private bool isGrounded;
+
+    [SerializeField] private Transform dieCheck;
+    private Camera camera;
+
+    private void Start()
+    {
+        camera = Camera.main;
+    }
 
     void Update()
     {
@@ -21,6 +28,11 @@ public class PlayerMovement : MonoBehaviour
             return;
 
         InputUpdate();     
+        
+        if(!isPlayerOutScreen())
+        {
+            GameManager.Instance.PlayerDie();
+        }
     }
     private void FixedUpdate()
     {
@@ -51,7 +63,7 @@ public class PlayerMovement : MonoBehaviour
             if (isGrounded)
                 isGrounded = false;
         }
-    }
+    }   
 
     private void InputUpdate()
     {
@@ -78,8 +90,13 @@ public class PlayerMovement : MonoBehaviour
     }
     private void MoveUpdate()
     {      
-
         Vector2 moveDirection = new Vector2(horizontalInput, 0);
-        _rigidBody.AddForce(moveDirection * moveSpeed,ForceMode2D.Force);
-    }   
+        _rigidBody.velocity += moveDirection * moveSpeed *Time.deltaTime;
+    }
+    private bool isPlayerOutScreen()
+    {       
+        Vector3 viewportPos = camera.WorldToViewportPoint(dieCheck.position);      
+        bool isInView = viewportPos.y >= 0 && viewportPos.z > 0;
+        return isInView;
+    }
 }
