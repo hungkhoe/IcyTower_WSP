@@ -36,7 +36,7 @@ public class PlatformManager : MonoBehaviour
     internal int currentPlatformDisapear = 0;
 
     private float starWallY;
-    private int totalWall = 0;
+    private int totalWall = 1;
 
     void Start()
     {
@@ -65,12 +65,17 @@ public class PlatformManager : MonoBehaviour
     {
         if (_platFormIndex > playerHighestPlatform)
         {
+            int difference = _platFormIndex - playerHighestPlatform;
+
             playerHighestPlatform = _platFormIndex;
 
             int score = playerHighestPlatform * 100;
             GameManager.Instance.inGameUI.UpdatePlayerScore(score);
 
-            SpawnPlatform();
+            for(int i = 0; i < difference; i++)
+            {
+                SpawnPlatform();
+            }            
         }
     }
     private void SpawnPlatform()
@@ -139,7 +144,7 @@ public class PlatformManager : MonoBehaviour
         currentLevel = 0;
         playerHighestPlatform = 0;
 
-        totalWall = 0;
+        totalWall = 1;
         totalPlatform = 1;
 
         startPlatform.gameObject.SetActive(true);

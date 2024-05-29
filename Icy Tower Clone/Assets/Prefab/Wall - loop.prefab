@@ -85,7 +85,7 @@ GameObject:
   - component: {fileID: 8533970323706290552}
   m_Layer: 6
   m_Name: Wall - loop
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
