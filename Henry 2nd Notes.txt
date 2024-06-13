@@ -1,0 +1,2 @@
+I swap from each 100th platform to 50th platform in order for you guys to test faster.
+You can change it anytime you want, I put it on platform manager

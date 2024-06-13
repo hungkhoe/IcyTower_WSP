@@ -27,9 +27,8 @@ public class PlatformManager : MonoBehaviour
     private int currentLevel = 0;
 
     private float startPlatformY;
-    private float platformRangeX = 3.4f;
-    private float regularPlatWidth;
-    private float smallPlatWidth;
+    private float platformRegularRangeX = 6.5f;
+    private float platformShortRangeX = 9.45f;
 
     private int totalPlatform = 1;
     internal int playerHighestPlatform = 0;
@@ -50,10 +49,7 @@ public class PlatformManager : MonoBehaviour
     }
 
     void InitPlatform()
-    {
-        regularPlatWidth = regularPlatform.GetComponent<SpriteRenderer>().size.x;
-        smallPlatWidth = smallPlatform.GetComponent<SpriteRenderer>().size.x;
-
+    {   
         startPlatformY = startPlatform.transform.position.y;
 
         for (int i = 0; i < TOTAL_START_PLATFORM; i++)
@@ -94,12 +90,12 @@ public class PlatformManager : MonoBehaviour
 
             if(Random.Range(0,2) == 0)
             {
-                randomX = Random.Range(-platformRangeX + regularPlatWidth, platformRangeX - regularPlatWidth);
+                randomX = Random.Range(-platformRegularRangeX, platformRegularRangeX);
                 temp = SimplePool.Spawn(regularPlatform, new Vector3(randomX, startPlatformY + platFormSpace * totalPlatform), Quaternion.identity);
             }
             else
             {
-                randomX = Random.Range(-platformRangeX + smallPlatWidth, platformRangeX - smallPlatWidth);
+                randomX = Random.Range(-platformShortRangeX, platformShortRangeX);
                 temp = SimplePool.Spawn(smallPlatform, new Vector3(randomX, startPlatformY + platFormSpace * totalPlatform), Quaternion.identity);
             }            
         }       

@@ -17,7 +17,7 @@ public class PlayerMovement : MonoBehaviour
     private float horizontalInput;
     private float verticalInput;
 
-    private bool isGrounded;
+    private bool isGrounded;   
     private bool isBounce = false;
 
     [SerializeField] private Transform dieCheck;
@@ -44,12 +44,12 @@ public class PlayerMovement : MonoBehaviour
         if (GameManager.Instance.isPause)
             return;
 
-        InputUpdate();
-
         if (!isPlayerOutScreen())
         {
             GameManager.Instance.PlayerDie();
         }
+
+        InputUpdate();      
     }
     private void FixedUpdate()
     {
@@ -69,54 +69,99 @@ public class PlayerMovement : MonoBehaviour
             Vector2 collisionNormal = collision.contacts[0].normal;
 
             if (collisionNormal.y > 0.5f)
-            {
-                Debug.Log("Landed on top of the platform");
-                isGrounded = true;
-                isBounce = true;
+            {                          
                 collision.gameObject.GetComponent<Platform>().PlayerLand();              
             }
         }
 
-        if(collision.collider.tag == "Wall")
-        {
-            Vector2 bounce = new Vector2(-playerVelocity.x, playerVelocity.y);
-            _rigidBody.velocity = bounce * bounceForce;
-            _animator.SetTrigger("bounce");
+        if (collision.collider.tag == "Wall")
+        {          
+            if ((isGrounded && Mathf.Abs(playerVelocity.x) < 4.54f) /*||(!isGrounded && Mathf.Abs(playerVelocity.x) < 10f)*/) // if force too small = cancel bounce
+                return;
+
+            Vector2 bounce = Vector2.one;
+            
+            if (isGrounded)
+            {
+                bounce = new Vector2(-playerVelocity.x, playerVelocity.y * 1.25f);
+            }
+            else
+            {
+                bounce = new Vector2(-playerVelocity.x, playerVelocity.y);
+            }
+
+            isBounce = true;      
+            _rigidBody.velocity = bounce * bounceForce;            
+            Invoke("FinishBounce", 0.05f); 
         }
     }      
 
     private void InputUpdate()
     {
         horizontalInput = 0;
-        verticalInput = 0;       
+        verticalInput = 0;
 
-        if (Input.GetKey(KeyCode.RightArrow) || isRightkeyPressed)
-        {
-            horizontalInput = 1;
-        }
-        else if (Input.GetKey(KeyCode.LeftArrow) || isLeftKeyPressed)
-        {
-            horizontalInput = -1;
+        if (isBounce == false)
+        {        
+            if (Input.GetKey(KeyCode.RightArrow) || isRightkeyPressed)
+            {
+                if (_rigidBody.velocity.x < 0 ) // cancel speed of opposite strafe
+                {
+                    if (isGrounded)
+                        _rigidBody.velocity = new Vector2(0, _rigidBody.velocity.y);
+                    else
+                        _rigidBody.velocity = new Vector2(-2, _rigidBody.velocity.y);
+                }
+                horizontalInput = 1;
+            }
+            else if (Input.GetKey(KeyCode.LeftArrow) || isLeftKeyPressed)
+            {
+                if (_rigidBody.velocity.x > 0) // cancel speed of opposite strafe
+                {
+                    if (isGrounded)
+                        _rigidBody.velocity = new Vector2(0, _rigidBody.velocity.y);
+                    else
+                        _rigidBody.velocity = new Vector2(2, _rigidBody.velocity.y);
+                }
+                horizontalInput = -1;
+            }
+
+            if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+            {                   
+                verticalInput = 1;              
+                _rigidBody.velocity = new Vector2(_rigidBody.velocity.x, jumpForce + (Mathf.Abs(_rigidBody.velocity.x)));
+                _animator.SetTrigger("jump");             
+            }
         }
 
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
-        {
-            verticalInput = 1;
-            _rigidBody.velocity = new Vector2(_rigidBody.velocity.x, jumpForce);
-            _animator.SetTrigger("jump");
-        }
-
-        _animator.SetFloat("vertical", _rigidBody.velocity.y);
         _animator.SetFloat("horizontal", _rigidBody.velocity.x);
-
-        _animator.SetFloat("verticalInput", verticalInput);
-        _animator.SetFloat("horizontalInput", horizontalInput);       
+        _animator.SetFloat("vertical", _rigidBody.velocity.y);         
+        _animator.SetBool("isGround", isGrounded);         
     }
     private void MoveUpdate()
     {      
         Vector2 moveDirection = new Vector2(horizontalInput, 0).normalized;
 
-        _rigidBody.velocity += moveDirection * moveSpeed;
+        if (isGrounded)
+            _rigidBody.velocity += moveDirection * moveSpeed;
+        else
+        {
+            if(horizontalInput == -1 )
+            {
+                if (_rigidBody.velocity.x > 0)
+                    _rigidBody.velocity += moveDirection * 5;
+                else
+                    _rigidBody.velocity += moveDirection * moveSpeed;
+            }
+            else if(horizontalInput == 1)
+            {
+                if (_rigidBody.velocity.x < 0)
+                    _rigidBody.velocity += moveDirection * 5;
+                else
+                    _rigidBody.velocity += moveDirection * moveSpeed;
+            }
+        }
+
 
         if(_rigidBody.velocity.x >= playerThreadsHoldSpeedX)
         {
@@ -139,14 +184,24 @@ public class PlayerMovement : MonoBehaviour
         {
             isGrounded = false;
         }
+        else
+        {
+            isGrounded = true;
+        }
     }
 
+    private void FinishBounce()
+    {
+        isBounce = false;
+    }
     private bool isPlayerOutScreen()
     {       
         Vector3 viewportPos = camera.WorldToViewportPoint(dieCheck.position);      
         bool isInView = viewportPos.y >= 0 && viewportPos.z > 0;
         return isInView;
     }
+
+
     public void ResetGame()
     {
         transform.position = startPos;

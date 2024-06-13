@@ -10,18 +10,11 @@ public class Platform : MonoBehaviour
     private bool isFading = false;
 
     private void Update()
-    {
-        if(GameManager.Instance.platformManager.playerHighestPlatform - platFormIndex >= 8)
-        {
-            gameObject.SetActive(false);
-            GameManager.Instance.platformManager.currentPlatformDisapear = platFormIndex + 1;
-            return;
-        }
-
+    {       
         if (isFading == true)
             return;
 
-        if (platFormIndex < GameManager.Instance.platformManager.playerHighestPlatform && GameManager.Instance.platformManager.playerHighestPlatform > 5)
+        if (platFormIndex <= GameManager.Instance.platformManager.playerHighestPlatform && GameManager.Instance.platformManager.playerHighestPlatform > 5)
         {
             if(platFormIndex <= GameManager.Instance.platformManager.currentPlatformDisapear)
             {
